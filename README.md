@@ -1,4 +1,27 @@
-# Multi-Agent AI System (Google ADK Assignment)
+# Multi-Agent AI System (Google ADK Assignment) — Documentation
+
+---
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Repository](#repository)
+3. [Architecture & Flow](#architecture--flow)
+4. [Agent Types](#agent-types)
+5. [Data Routing & Enrichment](#data-routing--enrichment)
+6. [Iterative Refinement](#iterative-refinement)
+7. [Supported APIs & Integrations](#supported-apis--integrations)
+8. [Example Agent Chain](#example-agent-chain)
+9. [Directory Structure](#directory-structure)
+10. [Setup & Running](#setup--running)
+11. [How It Works](#how-it-works)
+12. [Evaluation & Testing](#evaluation--testing)
+13. [Code Quality & Best Practices](#code-quality--best-practices)
+14. [For Developers](#for-developers)
+15. [Deliverables](#deliverables)
+16. [License](#license)
+
+---
 
 ## Overview
 
@@ -17,27 +40,33 @@ This project implements a **modular, production-grade multi-agent AI system** us
 
 ## Architecture & Flow
 
-### 1. **Planner & Agent Chaining**
+### 1. Planner & Agent Chaining
 
 - **PlannerAgent** analyzes the user goal and selects the optimal sequence of agents (the "agent chain") using entity extraction and goal parsing.
 - Each agent receives the current context, processes it, and passes enriched results to the next agent.
 - The chain is **iteratively refined** if the goal is not met (see `execute_chain` in `main.py`).
 - All agent actions, context changes, and errors are logged for transparency and debugging.
 
-### 2. **Agent Types**
+---
+
+## Agent Types
 
 - **PlannerAgent:** Determines agent order and adapts the chain if the goal is not satisfied.
 - **Enrichment Agents:** Each agent (e.g., WeatherAgent, SpaceXAgent, NewsAgent, SentimentAgent, AirQualityAgent, FinanceAgent, etc.) fetches or analyzes data, depending on the output of previous agents.
 - **SummarizerAgent:** Synthesizes all findings into a human-readable, executive summary and detailed report.
 - **Specialized Agents:** Additional agents (e.g., FactCheckAgent, BooksAgent, COVIDAgent, PollutionAgent, etc.) can be included based on the research goal.
 
-### 3. **Data Routing & Enrichment**
+---
+
+## Data Routing & Enrichment
 
 - Agents do not work in isolation: each depends on the previous agent’s output.
 - The `AgentContext` object is passed and enriched at each step, accumulating all intermediate and final results.
 - Data enrichment and agent trajectory are tracked and logged for every run.
 
-### 4. **Iterative Refinement**
+---
+
+## Iterative Refinement
 
 - If the summary is missing, incomplete, or the goal is not satisfied, the planner refines the agent chain and the system re-executes, up to a maximum number of iterations.
 - The planner’s routing logic and all changes to the agent chain are displayed and logged for evaluation.
@@ -91,28 +120,28 @@ multi-agent-ai-system/
 
 ## Setup & Running
 
-### 1. **Clone the repository**
+### 1. Clone the repository
 ```bash
 git clone https://github.com/ariktheone/multi-agent-ai-system.git
 cd multi-agent-ai-system
 ```
 
-### 2. **Install dependencies**
+### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. **Configure API keys**
+### 3. Configure API keys
 - Copy `.env.example` to `.env`:
   ```bash
   cp .env.example .env
   ```
 - Fill in your API keys for all required services (OpenWeatherMap, NewsAPI, Cohere, etc.).
 
-### 4. **(Optional) Configure agent settings**
+### 4. (Optional) Configure agent settings
 - Edit `configs/agents.json` to adjust agent parameters, endpoints, or enable/disable agents.
 
-### 5. **Run the platform**
+### 5. Run the platform
 ```bash
 python main.py
 ```
@@ -170,7 +199,7 @@ python main.py
 ## Deliverables
 
 - **Code:** Modular agents (planner + enrichment agents), main orchestration, and utilities.
-- **Docs:** This README (architecture, flow, agent logic, APIs, setup, evaluation).
+- **Docs:** This documentation (architecture, flow, agent logic, APIs, setup, evaluation).
 - **Evals:** Test scripts for goal satisfaction and agent trajectory.
 - **Evaluation:** Demonstrates agent chaining, data enrichment, planner routing, and iterative refinement.
 - **Code quality:** Modular, type-annotated, logged, and well-documented.
