@@ -9,6 +9,12 @@ This project implements a **modular, production-grade multi-agent AI system** us
 
 ---
 
+## Repository
+
+**GitHub:** [https://github.com/ariktheone/multi-agent-ai-system.git](https://github.com/ariktheone/multi-agent-ai-system.git)
+
+---
+
 ## Architecture & Flow
 
 ### 1. **Planner & Agent Chaining**
@@ -68,7 +74,7 @@ Each agent uses the previous agent's output (e.g., WeatherAgent uses the launch 
 ## Directory Structure
 
 ```
-multi_agent_system/
+multi-agent-ai-system/
 │
 ├── agents/           # All agent implementations (planner, enrichment, summarizer)
 ├── utils/            # Utilities (context, entity extraction, etc.)
@@ -87,8 +93,8 @@ multi_agent_system/
 
 ### 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
-cd multi_agent_system
+git clone https://github.com/ariktheone/multi-agent-ai-system.git
+cd multi-agent-ai-system
 ```
 
 ### 2. **Install dependencies**
@@ -168,15 +174,6 @@ python main.py
 - **Evals:** Test scripts for goal satisfaction and agent trajectory.
 - **Evaluation:** Demonstrates agent chaining, data enrichment, planner routing, and iterative refinement.
 - **Code quality:** Modular, type-annotated, logged, and well-documented.
-
----
-
-## Example Evaluation Table
-
-| Goal                                               | Proper Chaining | Iterative Refinement | API Usage | Notes  |
-|----------------------------------------------------|-----------------|---------------------|-----------|--------|
-| Next launch & Weather & summary                    | ✅ Yes          | ✅ Yes              | ✅ 3+     | Great! |
-| Comprehensive financial/news/sentiment analysis    | ✅ Yes          | ✅ Yes              | ✅ 3+     | Good!  |
 
 ---
 
