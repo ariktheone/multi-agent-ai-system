@@ -17,6 +17,9 @@ __pycache__/
 venv/
 .envrc
 
+# Python distribution files
+DOCUMENTATION.tex
+
 # OS files
 .DS_Store
 
