@@ -1,0 +1,7 @@
+google-generativeai
+requests
+transformers
+torch
+python-dotenv
+ratelimit
+textblob

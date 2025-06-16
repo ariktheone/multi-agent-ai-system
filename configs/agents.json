@@ -1,0 +1,14 @@
+{
+  "weather": {
+    "endpoint": "https://api.openweathermap.org/data/2.5/weather",
+    "method": "GET",
+    "api_key_env": "OPENWEATHER_KEY",
+    "rate_limit": {"calls": 50, "period": 60},
+    "name": "weather"
+  },
+  "spacex_next": {
+    "endpoint": "https://api.spacexdata.com/v5/launches/next",
+    "method": "GET",
+    "rate_limit": {"calls": 100, "period": 60}
+  }
+}
