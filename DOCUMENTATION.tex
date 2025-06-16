@@ -1,0 +1,194 @@
+% filepath: /Users/arijitmondal/Documents/internship_Assignment/multi_agent_system/DOCUMENTATION.tex
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\setlist{nosep}
+
+\title{Multi-Agent AI System (Google ADK Assignment) --- Documentation}
+\author{Arijit Mondal}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Overview}
+
+This project implements a \textbf{modular, production-grade multi-agent AI system} using Google ADK principles. The system takes a user-defined research goal, plans a sequence of agent actions, and routes data between agents---each enriching the output of the previous---until the goal is achieved. If the goal is not satisfied, the system iteratively refines the agent chain and re-executes, ensuring robust, actionable results.
+
+\textbf{Example Use Case:} \\
+``Find the next SpaceX launch, check weather at that location, then summarize if it may be delayed.''
+
+\section{Repository}
+
+\textbf{GitHub:} \url{https://github.com/ariktheone/multi-agent-ai-system.git}
+
+\section{Architecture \& Flow}
+
+\subsection*{Planner \& Agent Chaining}
+\begin{itemize}
+    \item \textbf{PlannerAgent} analyzes the user goal and selects the optimal sequence of agents (the ``agent chain'') using entity extraction and goal parsing.
+    \item Each agent receives the current context, processes it, and passes enriched results to the next agent.
+    \item The chain is \textbf{iteratively refined} if the goal is not met (see \texttt{execute\_chain} in \texttt{main.py}).
+    \item All agent actions, context changes, and errors are logged for transparency and debugging.
+\end{itemize}
+
+\section{Agent Types}
+
+\begin{itemize}
+    \item \textbf{PlannerAgent:} Determines agent order and adapts the chain if the goal is not satisfied.
+    \item \textbf{Enrichment Agents:} Each agent (e.g., WeatherAgent, SpaceXAgent, NewsAgent, SentimentAgent, AirQualityAgent, FinanceAgent, etc.) fetches or analyzes data, depending on the output of previous agents.
+    \item \textbf{SummarizerAgent:} Synthesizes all findings into a human-readable, executive summary and detailed report.
+    \item \textbf{Specialized Agents:} Additional agents (e.g., FactCheckAgent, BooksAgent, COVIDAgent, PollutionAgent, etc.) can be included based on the research goal.
+\end{itemize}
+
+\section{Data Routing \& Enrichment}
+
+\begin{itemize}
+    \item Agents do not work in isolation: each depends on the previous agent’s output.
+    \item The \texttt{AgentContext} object is passed and enriched at each step, accumulating all intermediate and final results.
+    \item Data enrichment and agent trajectory are tracked and logged for every run.
+\end{itemize}
+
+\section{Iterative Refinement}
+
+\begin{itemize}
+    \item If the summary is missing, incomplete, or the goal is not satisfied, the planner refines the agent chain and the system re-executes, up to a maximum number of iterations.
+    \item The planner’s routing logic and all changes to the agent chain are displayed and logged for evaluation.
+\end{itemize}
+
+\section{Supported APIs \& Integrations}
+
+\begin{itemize}
+    \item \textbf{OpenWeatherMap:} Weather and environmental data.
+    \item \textbf{SpaceX API:} Next launch details and launchpad location.
+    \item \textbf{NewsAPI:} Latest news relevant to the goal.
+    \item \textbf{CoinGecko:} Cryptocurrency and financial data.
+    \item \textbf{Cohere:} Advanced summarization and NLP (if API key provided).
+    \item \textbf{Other APIs:} Google Books, Alpha Vantage, COVID-19, and more (see \texttt{agents/} for full list).
+\end{itemize}
+
+All API keys are managed via a \texttt{.env} file (see \texttt{.env.example}). \\
+\textbf{You must provide your own API keys for full functionality.}
+
+\section{Example Agent Chain}
+
+For the goal: \\
+\textit{``Find the next SpaceX launch, check weather at that location, then summarize if it may be delayed.''}
+
+The system will automatically chain:
+\begin{verbatim}
+SpaceXAgent → WeatherAgent → NewsAgent → SentimentAgent → SummarizerAgent
+\end{verbatim}
+Each agent uses the previous agent's output (e.g., WeatherAgent uses the launch location from SpaceXAgent).
+
+\section{Directory Structure}
+
+\begin{verbatim}
+multi-agent-ai-system/
+│
+├── agents/           # All agent implementations (planner, enrichment, summarizer)
+├── utils/            # Utilities (context, entity extraction, etc.)
+├── configs/          # Agent and API configuration files
+├── evals/            # Evaluation scripts and tests
+├── reports/          # Generated reports (auto-saved)
+├── main.py           # Main orchestration logic
+├── requirements.txt  # Python dependencies
+├── .env.example      # Example API key config
+└── README.md         # This file
+\end{verbatim}
+
+\section{Setup \& Running}
+
+\begin{enumerate}
+    \item \textbf{Clone the repository}
+    \begin{verbatim}
+git clone https://github.com/ariktheone/multi-agent-ai-system.git
+cd multi-agent-ai-system
+    \end{verbatim}
+    \item \textbf{Install dependencies}
+    \begin{verbatim}
+pip install -r requirements.txt
+    \end{verbatim}
+    \item \textbf{Configure API keys}
+    \begin{verbatim}
+cp .env.example .env
+    \end{verbatim}
+    Fill in your API keys for all required services (OpenWeatherMap, NewsAPI, Cohere, etc.).
+    \item \textbf{(Optional) Configure agent settings} \\
+    Edit \texttt{configs/agents.json} to adjust agent parameters, endpoints, or enable/disable agents.
+    \item \textbf{Run the platform}
+    \begin{verbatim}
+python main.py
+    \end{verbatim}
+    Enter your research goal when prompted. The system will display the agent workflow, execute the chain, and print/save a detailed report.
+\end{enumerate}
+
+\section{How It Works}
+
+\begin{enumerate}
+    \item User provides a research goal (e.g., ``Comprehensive analysis of Tesla's financial performance, market sentiment, and recent news impact on stock valuation'').
+    \item PlannerAgent selects and orders the most relevant agents for the goal.
+    \item Agents run in sequence, each enriching the context with new data or analysis.
+    \item SummarizerAgent synthesizes all findings into a multi-section report.
+    \item Evaluation logic checks if the goal is satisfied; if not, the planner refines the chain and the process repeats.
+    \item Report is printed and saved to \texttt{reports/} with performance metrics and data quality assessment.
+\end{enumerate}
+
+\section{Evaluation \& Testing}
+
+\begin{itemize}
+    \item Unit and integration tests are in \texttt{evals/}.
+    \item Example: \texttt{test\_eval.py} checks if the summary is generated and if the agent trajectory is as expected.
+    \item Evaluation covers:
+    \begin{itemize}
+        \item Goal satisfaction: Is the summary present and sufficiently detailed?
+        \item Agent trajectory: Which agents ran, in what order, and what data did they add?
+        \item Planner routing: Did the planner adapt the chain if the goal was not met?
+        \item Iterative refinement: Was the chain refined and re-executed as needed?
+    \end{itemize}
+    \item Trajectory and enrichment logs are available for every run.
+\end{itemize}
+
+\section{Code Quality \& Best Practices}
+
+\begin{itemize}
+    \item Modular agent design: All agents inherit from \texttt{BaseAgent} for consistency and extensibility.
+    \item Type hints and docstrings throughout the codebase.
+    \item Structured logging: All agent actions, errors, and planner decisions are logged.
+    \item Linting/formatting: Use \texttt{black} and \texttt{flake8} for code quality.
+    \item Documentation: Each agent and utility is documented in its source file.
+    \item Separation of concerns: Planning, agent execution, evaluation, and reporting are modularized.
+\end{itemize}
+
+\section{For Developers}
+
+\begin{itemize}
+    \item See \texttt{main.py} for orchestration logic and agent chaining.
+    \item See \texttt{agents/} for all agent implementations (planner, enrichment, summarizer, etc.).
+    \item See \texttt{requirements.txt} for dependencies.
+    \item See \texttt{evals/} for test scripts and evaluation logic.
+    \item See \texttt{utils/} for context management and entity extraction.
+    \item See \texttt{configs/} for agent and API configuration.
+\end{itemize}
+
+\section{Deliverables}
+
+\begin{itemize}
+    \item \textbf{Code:} Modular agents (planner + enrichment agents), main orchestration, and utilities.
+    \item \textbf{Docs:} This documentation (architecture, flow, agent logic, APIs, setup, evaluation).
+    \item \textbf{Evals:} Test scripts for goal satisfaction and agent trajectory.
+    \item \textbf{Evaluation:} Demonstrates agent chaining, data enrichment, planner routing, and iterative refinement.
+    \item \textbf{Code quality:} Modular, type-annotated, logged, and well-documented.
+\end{itemize}
+
+\section{License}
+
+Internal use only. For demo and research purposes.
+
+\end{document}
